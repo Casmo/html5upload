@@ -8,10 +8,12 @@ var currentImageI = 0;
 var queue = new Array;
 
 function init() {
+	var isMobile=navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+	if(isMobile) {
+		document.getElementById('inputFilename').removeAttribute('multiple');
+	}
 	document.getElementById('inputFilename').onchange = function(event) {
-		files = this.files;
-		addFilesToQueue(files);
-		this.value = ''; // Clear the files from the input
+		addFilesToQueue();
 	};
 }
 
@@ -20,17 +22,21 @@ function init() {
   * create an html element for this file
   * @param object list of files
   */
-function addFilesToQueue(files) {
-	for (var i = 0; i < files.length; i++) {
-		queue[totalImageI] = files[i];
-		addHtml = '<div id="image_'+ totalImageI +'" class="box">';
-		addHtml += '<span class="status" id="status_'+ totalImageI +'"></span>';
-		addHtml += '<span class="info" id="info'+ totalImageI +'">'+ files[i].name +'</span>';
-		addHtml += '</div>';
-		document.getElementById('queue').innerHTML += addHtml;
-		totalImageI++;
+function addFilesToQueue() {
+	files = document.getElementById('inputFilename').files;
+	if(files.length > 0) {
+		for (var i = 0; i < files.length; i++) {
+			queue[totalImageI] = files[i];
+			addHtml = '<div id="image_'+ totalImageI +'" class="box">';
+			addHtml += '<span class="status" id="status_'+ totalImageI +'"></span>';
+			addHtml += '<span class="info" id="info'+ totalImageI +'">'+ files[i].name +'</span>';
+			addHtml += '</div>';
+			document.getElementById('queue').innerHTML += addHtml;
+			totalImageI++;
+		}
+		document.getElementById('inputFilename').value = '';
+		// Trigger the upload handler
 	}
-	// Trigger the upload handler
 	upload();
 }
 
@@ -72,10 +78,9 @@ function upload() {
 		
 		// Post the file to the server
 		xhr.open("post", 'upload.php', true);
-		var formData = new FormData();
-		formData.append("_method", 'POST');
-		formData.append("filename", queue[currentImageI]);
-		xhr.send(formData);
+		var form = new FormData(document.getElementById('formUploader'));
+		form.append("filename", queue[currentImageI]);
+		xhr.send(form);
 	}
 	return;
 }

@@ -14,7 +14,7 @@
 <p>Select multiple images at once and upload them one by one.</p>
 
 <form method="post" enctype="multipart/form-data" id="formUploader">
-<input id="inputFilename" type="file" name="filename[]" accept="image/jpeg" multiple="multiple" />
+<input id="inputFilename" multiple="multiple" type="file" name="filename[]" accept="image/jpeg" /> Not loading? <a href="#upload" onclick="addFilesToQueue();">Start upload</a>
 </form>
 <div id="queue"></div>
 </body>
