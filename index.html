@@ -4,9 +4,15 @@
 	<title>
 	A Simple HTML5 file upload
 	</title>
-	<meta name="escription" content="A simple HTML5 upload with javascript/php that uploads each file individual after selecting them." />
+	<meta name="description" content="A simple HTML5 upload with javascript/php that uploads each file individual after selecting them." />
+	<script src="upload.js"></script>
 </head>
-<body>
+<body onload="init();">
+<h1>Upload multiple images</h1>
+<p>Select multiple images at once and upload them one by one.</p>
 
+<form method="post" enctype="multipart/form-data">
+<input type="file" name="filename[]" multiple="multiple" />
+</form>
 </body>
 </html>
