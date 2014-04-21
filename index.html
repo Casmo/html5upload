@@ -2,19 +2,24 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>
-	A Simple HTML5 file upload
-	</title>
-	<meta name="description" content="A simple HTML5 upload with javascript/php that uploads each file individual after selecting them." />
-	<link href="upload.css" rel="stylesheet" type="text/css" />
-	<script src="upload.js"></script>
+	<title>HTML5 file uploader</title>
+	<meta name="description" content="HTML5 file uploader with the File Api and Bootstrap 3. This javascript will upload each file individual after selecting or dropping them." />
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/upload.js"></script>
+    <script>
+        window.onload = function() {
+            el = document.getElementById('InputFilename')
+            FileUploader = new FileUploader(el);
+            FileUploader.init();
+        }
+    </script>
 </head>
-<body onload="init();">
+<body>
 <h1>Upload multiple images</h1>
 <p>Select multiple images at once and upload them one by one.</p>
 
-<form method="post" enctype="multipart/form-data" id="formUploader">
-<input id="inputFilename" multiple="multiple" type="file" name="filename[]" accept="image/jpeg" /> Not loading? <a href="#upload" onclick="addFilesToQueue();">Start upload</a>
+<form method="post" enctype="multipart/form-data" target="upload.php">
+<input id="InputFilename" multiple="multiple" type="file" name="filename[]" />
 </form>
 <div id="queue"></div>
 </body>

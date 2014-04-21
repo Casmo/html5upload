@@ -6,27 +6,25 @@
 $secureDirectory = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
 // Point to a directory where the (temporary) resizes images will be saved. Change the url below if you change this
 $cacheDirectory = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
-
-if(isset($_FILES['filename']['name']) && !empty($_FILES['filename']['name'])) {
-	if($_FILES['filename']['error'] === 0 && $_FILES['filename']['type'] == 'image/jpeg') {
-		$filename = uniqid() .'.jpg';
-		$filepath = $secureDirectory . $filename;
-		if(move_uploaded_file($_FILES['filename']['tmp_name'], $filepath)) {
-			// Fix your own resize to create a nice thumb
-			list($orgWidth, $orgHeight) = getimagesize($filepath);
-			$thumb = imagecreatetruecolor(100, 100);
-			$source = imagecreatefromjpeg($filepath);
-			imagecopyresized($thumb, $source, 0, 0, 0, 0, 100, 100, $orgWidth, $orgHeight);
-			if(imagejpeg($thumb, $cacheDirectory . $filename, 70)) {
-				echo '<img src="cache/'. $filename .'" width="100" height="100" alt="" />';
-				exit;
-			}
-			else {
-				echo '1';
-				exit;
-			}
-		}
-	}
+$output = '0';
+if (isset($_FILES['filename']) && !empty($_FILES['filename']) && isset($_FILES['filename']['name'][0])) {
+    foreach ($_FILES['filename']['name'] as $index => $name) {
+        $file = array();
+        $file['name'] = $_FILES['filename']['name'][$index];
+        $file['type'] = $_FILES['filename']['type'][$index];
+        $file['tmp_name'] = $_FILES['filename']['tmp_name'][$index];
+        $file['error'] = $_FILES['filename']['error'][$index];
+        $file['size'] = $_FILES['filename']['size'][$index];
+        if(isset($file['name']) && !empty($file['name'])) {
+            if($file['error'] === 0 && $file['type'] == 'image/jpeg') {
+                $filename = uniqid() .'.jpg';
+                $filepath = $secureDirectory . $filename;
+                if(move_uploaded_file($file['tmp_name'], $filepath)) {
+                    $output = '1';
+                }
+            }
+        }
+    }
 }
-echo '0';
+echo $output;
 exit;
