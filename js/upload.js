@@ -105,12 +105,12 @@ var FileUploader = function ( domElement ) {
         if (scope._isUploading == true) {
             return;
         }
-        scope._isUploading = true;
 
         domCurrentUploadedItem = document.getElementById('FileUpload' + scope._currentImageNumber);
         if (domCurrentUploadedItem == null) {
             return;
         }
+        scope._isUploading = true;
 
         xhr = new XMLHttpRequest();
 
