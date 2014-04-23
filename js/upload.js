@@ -179,6 +179,7 @@ var FileUploader = function ( domElement ) {
         document.getElementById('FileUploadProgress' + scope._currentImageNumber).className = 'progress progress-striped active';
 
         xhr.open("post", postUrl, true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         form = scope.domElement.form;
         formData = new FormData();
         for (i = 0; i < form.elements.length; i ++) {
